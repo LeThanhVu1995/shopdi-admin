@@ -1,0 +1,5 @@
+**/*.css
+**/*.scss
+**/*.json
+src/assets
+node_modules

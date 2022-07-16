@@ -1,0 +1,12 @@
+{
+  "titleSignin": "Sign In",
+  "titleTextSignin": "Enter your email and password to sign in",
+  "email": "Email",
+  "password": "Password",
+  "signInEmail": "Sign In With Email",
+  "signInFacebook": "Sign In With Facebook",
+  "signInGoogle": "Sign In With Google",
+  "dontHaveAccount": "Don't have an account? ",
+  "titleSignUp": "Sign Up",
+  "forgotPass": "Forgot Password?"
+}

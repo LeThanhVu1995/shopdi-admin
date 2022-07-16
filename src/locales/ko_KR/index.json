@@ -1,0 +1,12 @@
+{
+  "titleSignin": "로그인",
+  "titleTextSignin": "이메일과 비밀번호를 입력하여 로그인하세요",
+  "email": "이메일",
+  "password": "비밀번호",
+  "signInEmail": "이메일로 로그인",
+  "signInFacebook": "페이스북으로 로그인",
+  "signInGoogle": "Google로 로그인",
+  "dontHaveAccount": "계정이 없으신가요 ? ",
+  "titleSignUp": "가입하기",
+  "forgotPass": "비밀번호를 잊으 셨나요"
+}
