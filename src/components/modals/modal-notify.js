@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 export default function ({ opened, setOpened, onSendMessage }) {
   const [text, setText] = useState('');
+  const [title, setTitle] = useState('');
 
   return (
     <div
@@ -48,6 +49,11 @@ export default function ({ opened, setOpened, onSendMessage }) {
             <h3 className="text-[#1B1D21] text-[18px] font-medium mb-[18px]">
               Nội dung thông báo
             </h3>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value || '')}
+            />
             <textarea
               id="w3review"
               name="w3review"
@@ -60,8 +66,9 @@ export default function ({ opened, setOpened, onSendMessage }) {
             <div className="flex justify-end">
               <button
                 onClick={async () => {
-                  await onSendMessage(text);
+                  await onSendMessage(title, text);
                   setText('');
+                  setTitle('');
                 }}
                 type="button"
                 className="bg-black text-white rounded-[8px] px-[16px] py-[8px] w-[160px]"

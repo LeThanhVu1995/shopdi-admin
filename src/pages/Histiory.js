@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useUI } from '../hook/useUI';
 import { HiddenPriceService } from '../api';
 import { emptyArray } from '../core/utils';
@@ -32,6 +32,8 @@ function History() {
 
   const [filterText, setFilterText] = useState('');
   const [filterDate, setFilterDate] = useState('ALL');
+
+  const navigate = useNavigate();
 
   const { sku } = useParams();
 

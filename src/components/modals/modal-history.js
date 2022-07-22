@@ -1,45 +1,30 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { emptyArray } from '../../core/utils';
+import { UserService } from '../../api';
 
 import { useUI } from '../../hook/useUI';
+
+const userService = new UserService();
 
 export default function ({ opened, setOpened }) {
   if (!opened) return null;
 
-  function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  const [tabActive, setTabActive] = useState(0);
+  const [tabActive, setTabActive] = useState(1);
   const [filterText, setFilterText] = useState('');
   const [filterDate, setFilterDate] = useState('ALL');
   const { loading, setLoading } = useUI();
 
   const [usersHistory, setUsersHistory] = useState([]);
 
-  const randomUsers = useCallback(() => {
-    return (async () =>
-      new Promise((rs) => {
-        setTimeout(() => {
-          const users = [];
-          for (let i = 0; i < 100; i += 1) {
-            users.push({
-              phone: getRndInteger(1000000000, 9999999999),
-              email: i + 'nguyenvana@gmail.com',
-              point: getRndInteger(100, 5000),
-            });
-          }
-
-          rs(users);
-        }, 3000);
-      }))();
-  }, [tabActive, filterText, filterDate]);
-
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const users = await randomUsers();
+        const { data: users } = await userService.actGetPaymentUsers({
+          type: tabActive,
+          pageSize: 10,
+          pageIndex: 1,
+        });
         setUsersHistory(users);
       } catch (err) {
         console.error(err);
@@ -54,9 +39,9 @@ export default function ({ opened, setOpened }) {
 
     return usersHistory.map((user) => (
       <tr className="bg-white border-b">
-        <td className="px-6 py-2">{user.phone}</td>
-        <td className="px-6 py-2">{user.email}</td>
-        <td className="px-6 py-2">{user.point}</td>
+        <td className="px-6 py-2">{user.customerPhone}</td>
+        <td className="px-6 py-2">{user.createdAt}</td>
+        <td className="px-6 py-2">{user.amount}</td>
       </tr>
     ));
   };
@@ -106,24 +91,13 @@ export default function ({ opened, setOpened }) {
             <div className="flex flex-row bg-[#f5f5f5] rounded-lg p-[8px]">
               <div className="flex flex-1 justify-center items-center cursor-pointer">
                 <button
-                  onClick={() => setTabActive(0)}
-                  type="button"
-                  className={`${
-                    tabActive === 0 ? 'bg-white' : ''
-                  } text-black rounded-lg w-full text-center py-[8px] block`}
-                >
-                  Đã Nạp
-                </button>
-              </div>
-              <div className="flex flex-1 justify-center items-center cursor-pointer">
-                <button
                   onClick={() => setTabActive(1)}
                   type="button"
                   className={`${
                     tabActive === 1 ? 'bg-white' : ''
                   } text-black rounded-lg w-full text-center py-[8px] block`}
                 >
-                  Đã Dùng
+                  Đã Nạp
                 </button>
               </div>
               <div className="flex flex-1 justify-center items-center cursor-pointer">
@@ -134,7 +108,7 @@ export default function ({ opened, setOpened }) {
                     tabActive === 2 ? 'bg-white' : ''
                   } text-black rounded-lg w-full text-center py-[8px] block`}
                 >
-                  Đã Chuyển
+                  Đã Dùng
                 </button>
               </div>
               <div className="flex flex-1 justify-center items-center cursor-pointer">
@@ -143,6 +117,17 @@ export default function ({ opened, setOpened }) {
                   type="button"
                   className={`${
                     tabActive === 3 ? 'bg-white' : ''
+                  } text-black rounded-lg w-full text-center py-[8px] block`}
+                >
+                  Đã Chuyển
+                </button>
+              </div>
+              <div className="flex flex-1 justify-center items-center cursor-pointer">
+                <button
+                  onClick={() => setTabActive(4)}
+                  type="button"
+                  className={`${
+                    tabActive === 4 ? 'bg-white' : ''
                   } text-black rounded-lg w-full text-center py-[8px] block`}
                 >
                   Đã Nhận
@@ -268,7 +253,7 @@ export default function ({ opened, setOpened }) {
                       Số Điện Thoại
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Email
+                      Thời gian
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Số Xu

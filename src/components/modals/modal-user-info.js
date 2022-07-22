@@ -87,8 +87,7 @@ export default function ({ opened, setOpened, user, onEditUser }) {
               </Form.Item>
               <Form.Item name="birthday" label="Ngày Sinh">
                 <DatePicker
-                  format="YYYY-MM-DD HH:mm"
-                  showTime
+                  format="YYYY-MM-DD"
                   className="rounded-md w-full p-2.5 border border-[#4D4D4D] bg-white"
                 />
               </Form.Item>

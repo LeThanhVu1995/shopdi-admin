@@ -138,7 +138,7 @@ function Home() {
     );
   };
 
-  const onActSendMessage = async (content) => {
+  const onActSendMessage = async (title, content) => {
     try {
       if (!content) return;
       setLoading(true);
@@ -147,7 +147,7 @@ function Home() {
       const params = {
         role,
         phone: null,
-        title: 'User send message',
+        title,
         contents: content,
         apiKey: 'c6fdcc72-caee-4f1b-a272-7be9b60d57d0',
       };

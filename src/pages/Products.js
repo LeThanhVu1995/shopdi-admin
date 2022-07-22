@@ -31,6 +31,7 @@ function Products() {
   const [pageSize, setPageSize] = useState(12);
   const [search, setSearch] = useState('');
   const { user } = useAuth();
+  const [totalRecord, setTotalRecord] = useState(0);
 
   const navigate = useNavigate();
 
@@ -39,6 +40,10 @@ function Products() {
   const [modalItem, setModalItem] = useState(false);
   const [modalAuction, setModalAuction] = useState(false);
   const [modalHistory, setModalHistory] = useState(false);
+
+  const totalPages = useMemo(() => {
+    return Math.floor(totalRecord / pageSize) + 1;
+  }, [totalRecord, pageSize]);
 
   const productSelected = useMemo(() => {
     return product;
@@ -77,14 +82,16 @@ function Products() {
       try {
         setLoading(true);
 
-        const { data: products } = await productService.actGetProducts({
-          keyword: search,
-          pageSize,
-          page,
-          sortBy: 'name',
-        });
+        const { data: products, totalRecord } =
+          await productService.actGetProducts({
+            keyword: search,
+            pageSize,
+            page,
+            sortBy: 'name',
+          });
 
         setProducts(products);
+        setTotalRecord(totalRecord);
       } catch (err) {
         console.error(err);
       } finally {
@@ -99,14 +106,16 @@ function Products() {
       try {
         setLoading(true);
 
-        const { data: products } = await productService.actGetProducts({
-          keyword: search,
-          pageSize,
-          page,
-          sortBy: 'name',
-        });
+        const { data: products, totalRecord } =
+          await productService.actGetProducts({
+            keyword: search,
+            pageSize,
+            page,
+            sortBy: 'name',
+          });
 
         setProducts(products);
+        setTotalRecord(totalRecord);
       } catch (err) {
         console.error(err);
       } finally {
@@ -337,15 +346,18 @@ function Products() {
               {page}
             </button>
           </li>
-          <li>
-            <button
-              onClick={() => setPage(page + 1)}
-              type="button"
-              className="py-2 px-3 leading-tight text-black bg-white rounded-md font-bold"
-            >
-              {'>'}
-            </button>
-          </li>
+          <span className="text-black">{`of ${totalPages}`}</span>
+          {totalPages && page !== totalPages ? (
+            <li>
+              <button
+                onClick={() => setPage(page + 1)}
+                type="button"
+                className="py-2 px-3 leading-tight text-black bg-white rounded-md font-bold"
+              >
+                {'>'}
+              </button>
+            </li>
+          ) : null}
         </ul>
       </nav>
     </>
