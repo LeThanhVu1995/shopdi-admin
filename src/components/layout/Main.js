@@ -11,6 +11,8 @@ function Main() {
 
   const { pathname } = useLocation();
 
+  const [opened, setOpened] = useState(true);
+
   const onSignout = async () => {
     await signout();
     navigate('/sign-in', { replace: true });
@@ -18,7 +20,54 @@ function Main() {
 
   return (
     <div className="flex min-h-[100vh]">
-      <aside className="w-[264px]" aria-label="Sidebar">
+      <aside
+        className={`${
+          opened ? 'w-[264px]' : 'w-[80px]'
+        } relative transition-all duration-500`}
+        aria-label="Sidebar"
+      >
+        <button
+          type="button"
+          className={`absolute right-[-20px] top-[20px] cursor-pointer transition-all duration-500 ${
+            !opened ? '' : 'rotate-180'
+          } `}
+          onClick={() => setOpened(!opened)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+          >
+            <circle cx="20" cy="20" r="20" fill="#F5F5F9" />
+            <circle
+              cx="20"
+              cy="20"
+              r="13"
+              fill="url(#paint0_linear_397_3239)"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M21.8968 14L15.7144 20L21.8968 26L23.4286 24.5134L18.778 20L23.4286 15.4866L21.8968 14Z"
+              fill="white"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_397_3239"
+                x1="20"
+                y1="7"
+                x2="20"
+                y2="33"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stopColor="#FFE25A" />
+                <stop offset="1" stopColor="#F7C102" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </button>
         <div className="overflow-y-auto py-4 px-3 bg-[#374756] min-h-[100vh]">
           <div className="mb-[26px] flex">
             <svg
@@ -92,12 +141,16 @@ function Main() {
                   <path d="M18.5925 6.0267C17.6804 5.04186 16.4063 4.49951 15 4.49951C13.5863 4.49951 12.308 5.03857 11.4 6.01732C10.4822 7.00685 10.035 8.3517 10.14 9.80388C10.3482 12.6689 12.5283 14.9995 15 14.9995C17.4718 14.9995 19.6482 12.6694 19.8596 9.80482C19.966 8.36576 19.516 7.02373 18.5925 6.0267Z" />
                   <path d="M23.2498 25.4985H6.74978C6.53381 25.5013 6.31993 25.456 6.1237 25.3657C5.92747 25.2755 5.75383 25.1426 5.6154 24.9768C5.31072 24.6126 5.1879 24.1153 5.27884 23.6123C5.67447 21.4176 6.90915 19.574 8.84978 18.2798C10.5738 17.1309 12.7577 16.4985 14.9998 16.4985C17.2418 16.4985 19.4257 17.1313 21.1498 18.2798C23.0904 19.5735 24.3251 21.4171 24.7207 23.6118C24.8116 24.1148 24.6888 24.6121 24.3841 24.9763C24.2458 25.1422 24.0721 25.2752 23.8759 25.3655C23.6797 25.4558 23.4658 25.5013 23.2498 25.4985Z" />
                 </svg>
-                <span className="ml-3">Người dùng</span>
-                <div
-                  className={`w-1 h-[100%] rounded-l-[5px] top-0 bg-[#FDD116] transition duration-75 opacity-0  ${
-                    pathname.indexOf('users') !== -1 ? 'opacity-100' : ''
-                  }  absolute right-[-12px]`}
-                />
+                {opened ? (
+                  <>
+                    <span className="ml-3 whitespace-nowrap">Người dùng</span>
+                    <div
+                      className={`w-1 h-[100%] rounded-l-[5px] top-0 bg-[#FDD116] transition duration-75 opacity-0  ${
+                        pathname.indexOf('users') !== -1 ? 'opacity-100' : ''
+                      }  absolute right-[-12px]`}
+                    />
+                  </>
+                ) : null}
               </button>
             </li>
             <li>
@@ -121,12 +174,16 @@ function Main() {
                   <path d="M14.9864 21.4189L8.19844 18.3158L4.5 19.9682L15 24.7494L25.5 19.9682L21.8114 18.3135L14.9864 21.4189Z" />
                   <path d="M25.5 14.9994L21.9595 13.4277L15.0047 16.6212L8.03109 13.4258L4.5 14.9994L15 19.7806L25.5 14.9994Z" />
                 </svg>
-                <span className="ml-3">Sản Phẩm</span>
-                <div
-                  className={`w-1 h-[100%] rounded-l-[5px] top-0 bg-[#FDD116] transition duration-75 opacity-0  ${
-                    pathname.indexOf('products') !== -1 ? 'opacity-100' : ''
-                  }  absolute right-[-12px]`}
-                />
+                {opened ? (
+                  <>
+                    <span className="ml-3 whitespace-nowrap">Sản Phẩm</span>
+                    <div
+                      className={`w-1 h-[100%] rounded-l-[5px] top-0 bg-[#FDD116] transition duration-75 opacity-0  ${
+                        pathname.indexOf('products') !== -1 ? 'opacity-100' : ''
+                      }  absolute right-[-12px]`}
+                    />
+                  </>
+                ) : null}
               </button>
             </li>
             <li>
@@ -154,15 +211,19 @@ function Main() {
                 >
                   <path d="M14.25 25.5002V23.793C10.5248 23.5784 8.26172 21.6593 8.25 18.7502H11.625C11.708 19.9849 12.7434 20.9276 14.25 21.094V16.5002L12.9952 16.1721C10.1358 15.5074 8.60578 13.857 8.60578 11.3871C8.60578 8.47571 10.6912 6.56649 14.25 6.28149V4.50024H15.75V6.28149C19.3777 6.57681 21.3281 8.5193 21.375 11.2502H18C17.9644 10.1224 17.258 9.21634 15.75 9.09399V13.4065L17.1947 13.7477C20.2317 14.4124 21.75 15.9846 21.75 18.5627C21.75 21.5787 19.6997 23.5259 15.75 23.7809V25.5002H14.25ZM14.25 13.1252V9.09399C12.9567 9.16524 12.0342 9.95977 12.0342 11.0876C12.0342 12.1329 12.8025 12.8163 14.25 13.1252ZM15.75 16.7815V21.094C17.5383 21.0218 18.3928 20.2071 18.3928 18.9485C18.3928 17.7963 17.5383 17.0205 15.75 16.7815Z" />
                 </svg>
-                <span className="ml-3">Phiên Unlock</span>
-                <div
-                  className={`w-1 h-[100%] rounded-l-[5px] top-0 bg-[#FDD116] transition duration-75 opacity-0  ${
-                    pathname.indexOf('auctions') !== -1 ||
-                    pathname.indexOf('history') !== -1
-                      ? 'opacity-100'
-                      : ''
-                  }  absolute right-[-12px]`}
-                />
+                {opened ? (
+                  <>
+                    <span className="ml-3 whitespace-nowrap">Phiên Unlock</span>
+                    <div
+                      className={`w-1 h-[100%] rounded-l-[5px] top-0 bg-[#FDD116] transition duration-75 opacity-0  ${
+                        pathname.indexOf('auctions') !== -1 ||
+                        pathname.indexOf('history') !== -1
+                          ? 'opacity-100'
+                          : ''
+                      }  absolute right-[-12px]`}
+                    />
+                  </>
+                ) : null}
               </button>
             </li>
           </ul>
