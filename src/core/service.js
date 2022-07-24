@@ -47,6 +47,10 @@ export default class Service {
       const response = await this.axios.request(opts);
       return response?.data;
     } catch (err) {
+      if (err.response.status === 401) {
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+        window.location.reload();
+      }
       throw err.response;
     }
   }
