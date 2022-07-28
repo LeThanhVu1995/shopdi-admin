@@ -16,6 +16,10 @@ class UserService extends BaseService {
   actGetUsersToPup = ({ phone, amount }) => {
     return this.get('/users/topup', { phone, amount });
   };
+
+  actPostUserProfile = ({ name, birthDay, gender, email, id }) => {
+    return this.post('/users/profile', { name, birthDay, gender, email, id });
+  };
 }
 
 export default UserService;

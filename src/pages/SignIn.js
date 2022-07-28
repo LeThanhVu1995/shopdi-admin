@@ -7,6 +7,7 @@ import eyeicon from '../assets/images/eye.svg';
 import lockicon from '../assets/images/lock.svg';
 import { useAuth } from '../hook/useAuth';
 import { useUI } from '../hook/useUI';
+import ModalForgetPass from '../components/modals/modal-forget-pass';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -14,6 +15,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const { signin } = useAuth();
   const { setLoading } = useUI();
+  const [openedForget, setOpenedForget] = useState(false);
 
   const onSignin = async () => {
     try {
@@ -30,6 +32,7 @@ export default function SignIn() {
 
   return (
     <div className="max-h-[100vh] bg-white">
+      <ModalForgetPass opened={openedForget} setOpened={setOpenedForget} />
       <div className="grid grid-cols-2">
         <img
           src={signinbg}
@@ -92,6 +95,7 @@ export default function SignIn() {
             </button>
             <div className="flex items-center justify-center">
               <button
+                onClick={() => setOpenedForget(true)}
                 type="button"
                 className="text-[#0049C6] text-[16px] font-medium"
               >

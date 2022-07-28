@@ -107,25 +107,6 @@ function Home() {
   };
 
   const renderPages = () => {
-    // const pages = [];
-    // for (let itemPage = 1; itemPage <= totalPages; itemPage += 1) {
-    //   pages.push(
-    //     <li>
-    //       <button
-    //         onClick={() => setPage(itemPage)}
-    //         type="button"
-    //         className={`py-2 px-3 leading-tight ${
-    //           page === itemPage ? 'text-black bg-[#fdd116]' : ''
-    //         } text-white bg-black rounded-md border-gray-300 hover:bg-gray-100 hover:text-gray-700  `}
-    //       >
-    //         {itemPage}
-    //       </button>
-    //     </li>
-    //   );
-    // }
-
-    // return pages;
-
     return (
       <li>
         <button
@@ -284,7 +265,7 @@ function Home() {
     try {
       setLoading(true);
       const { phone } = user;
-      const { status } = await userService.actGetUsersToPup({
+      const { status, mess } = await userService.actGetUsersToPup({
         phone,
         amount: coin,
       });
@@ -292,6 +273,8 @@ function Home() {
       if (status) {
         message.success('Bạn đã nạp xu thành công');
         setDepositeModal(false);
+      } else {
+        message.error(mess);
       }
     } catch (err) {
       console.error(err);
@@ -303,6 +286,26 @@ function Home() {
   const onActEditUser = async (values) => {
     try {
       setLoading(true);
+
+      const { userId } = user;
+
+      const { status, message: mess } = await userService.actPostUserProfile({
+        name: values.name,
+        email: values.email,
+        id: userId,
+        gender: values.gender,
+        birthDay: values.birthday.format('DD/MM/YYYY'),
+      });
+
+      if (status) {
+        message.success('Bạn đã cập nhật người dùng thành công');
+        setUserModal(false);
+        const { data: users } = await userService.actGetUsers();
+        setUsers(mappingUsersTable(users) || []);
+      } else {
+        message.error(mess);
+      }
+
       console.log(values);
     } catch (err) {
       console.error(err);

@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Row, Col, Button, InputNumber } from 'antd';
 
 export default function ({ opened, setOpened, onActDeposite }) {
+  if (!opened) return null;
+
   function onDeposite(values) {
     const { coin } = values;
     onActDeposite(coin);

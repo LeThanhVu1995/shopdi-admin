@@ -16,6 +16,10 @@ class HiddenPriceService extends BaseService {
   actGetHiddenPriceHistoryDetailById = (id, params) => {
     return this.get(`/hiddenprice/history/detail/${id}`, params);
   };
+
+  actGetHiddenPriceTransactions = ({ page, pageSize, keyword }) => {
+    return this.get('/hiddenprice/transactions', { page, pageSize, keyword });
+  };
 }
 
 export default HiddenPriceService;

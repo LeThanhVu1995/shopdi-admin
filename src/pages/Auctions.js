@@ -1,6 +1,117 @@
-import profilavatar from '../assets/images/face-1.jpg';
+import { useEffect, useMemo, useState } from 'react';
+import HiddenPriceService from '../api/hidden-price-service';
+import { useUI } from '../hook/useUI';
 
-function Billing() {
+const hiddenPriceService = new HiddenPriceService();
+
+function Auctions() {
+  const [page, setPage] = useState(1);
+  const [transactions, setTransactions] = useState([]);
+  const { setLoading, loading } = useUI();
+  const [pageSize, setPageSize] = useState(12);
+  const [totalRecord, setTotalRecord] = useState(0);
+
+  const totalPages = useMemo(() => {
+    return Math.floor(totalRecord / pageSize) + 1;
+  }, [totalRecord, pageSize]);
+
+  useEffect(() => {
+    if (page < 1) return;
+
+    (async () => {
+      try {
+        setLoading(true);
+        const { data, totalRecord } =
+          await hiddenPriceService.actGetHiddenPriceTransactions({
+            page,
+            pageSize,
+            keyword: '',
+          });
+        setTotalRecord(totalRecord);
+        setTransactions(data);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [page, pageSize]);
+
+  const renderedRows = () => {
+    console.log(transactions);
+    if (!transactions || !transactions.length) return null;
+
+    return transactions.map(
+      ({
+        deposit,
+        name,
+        payment,
+        point,
+        price,
+        remain,
+        sku,
+        storeName,
+        thumnails,
+        total,
+        turnover,
+      }) => (
+        <tr className="bg-white border-b">
+          <th className="px-2 py-2 ">
+            <div className="border border-gray-300 border-solid p-[4px] max-w-[50px]">
+              <img
+                src={thumnails}
+                alt="trans-img"
+                style={{ width: '25px', height: '25px' }}
+              />
+            </div>
+          </th>
+          <td className="px-[4px] py-2">{name}</td>
+          <td className="px-[4px] py-2">{sku}</td>
+          <td className="px-[4px] py-2">{price}</td>
+          <td className="px-[4px] py-2">{total}</td>
+          <td className="px-[4px] py-2">{deposit}</td>
+          <td className="px-[4px] py-2">{payment}</td>
+          <td className="px-[4px] py-2">{remain}</td>
+          <td className="px-[4px] py-2">{point}</td>
+          <td className="px-[4px] py-2">{turnover}</td>
+          <td className="px-[4px] py-2">{storeName}</td>
+          <td className="px-2 py-2 text-right">
+            <button type="button" className="group">
+              <svg
+                style={{ display: 'initial' }}
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+              >
+                <path
+                  d="M9 9.75C9.41421 9.75 9.75 9.41421 9.75 9C9.75 8.58579 9.41421 8.25 9 8.25C8.58579 8.25 8.25 8.58579 8.25 9C8.25 9.41421 8.58579 9.75 9 9.75Z"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 4.5C9.41421 4.5 9.75 4.16421 9.75 3.75C9.75 3.33579 9.41421 3 9 3C8.58579 3 8.25 3.33579 8.25 3.75C8.25 4.16421 8.58579 4.5 9 4.5Z"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 15C9.41421 15 9.75 14.6642 9.75 14.25C9.75 13.8358 9.41421 13.5 9 13.5C8.58579 13.5 8.25 13.8358 8.25 14.25C8.25 14.6642 8.58579 15 9 15Z"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      )
+    );
+  };
+
   return (
     <>
       <div
@@ -42,7 +153,10 @@ function Billing() {
             </div>
           </div>
 
-          <div className="mt-[30px] relative overflow-x-auto shadow-md sm:rounded-lg">
+          <div
+            style={{ height: 'calc(100vh - 340px)' }}
+            className="mt-[30px] relative overflow-x-auto shadow-md sm:rounded-lg"
+          >
             <table className="w-full text-sm text-left text-gray-500 ">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
                 <tr>
@@ -53,142 +167,82 @@ function Billing() {
                     Tên
                   </th>
                   <th scope="col" className="px-6 py-2">
-                    Loại
-                  </th>
-                  <th scope="col" className="px-6 py-2">
-                    Attribute Set
-                  </th>
-                  <th scope="col" className="px-6 py-2">
                     SKU
                   </th>
                   <th scope="col" className="px-6 py-2">
-                    Giá Bán
+                    Giá bán
                   </th>
-                  <th scope="col" className="px-6 py-2 text-right">
-                    Action
+                  <th scope="col" className="px-6 py-2">
+                    Tổng SP
+                  </th>
+                  <th scope="col" className="px-6 py-2">
+                    Đã đặt cọc
+                  </th>
+                  <th scope="col" className="px-6 py-2 ">
+                    Đã thanh toán
+                  </th>
+                  <th scope="col" className="px-6 py-2 ">
+                    Còn lại
+                  </th>
+                  <th scope="col" className="px-6 py-2 ">
+                    Số xu thu được
+                  </th>
+                  <th scope="col" className="px-6 py-2 ">
+                    Doanh số
+                  </th>
+                  <th scope="col" className="px-6 py-2 ">
+                    Cửa hàng
+                  </th>
+                  <th scope="col" className="px-6 py-2  text-right">
+                    Hành động
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr className="bg-white border-b">
-                  <th className="px-2 py-2 ">
-                    <div className="border border-gray-300 border-solid p-[4px] max-w-[50px]">
-                      <img
-                        src={profilavatar}
-                        className="w-[40px] h-[40px] border border-1"
-                        alt="img-products"
-                      />
-                    </div>
-                  </th>
-                  <td className="px-6 py-2">Sliver</td>
-                  <td className="px-6 py-2">Laptop123</td>
-                  <td className="px-6 py-2">Laptop</td>
-                  <td className="px-6 py-2">Laptop</td>
-                  <td className="px-6 py-2">$2999</td>
-                  <td className="px-6 py-2 text-right">
-                    <button type="button" className="group">
-                      <svg
-                        style={{ display: 'initial' }}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                      >
-                        <path
-                          d="M9 9.75C9.41421 9.75 9.75 9.41421 9.75 9C9.75 8.58579 9.41421 8.25 9 8.25C8.58579 8.25 8.25 8.58579 8.25 9C8.25 9.41421 8.58579 9.75 9 9.75Z"
-                          stroke="black"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M9 4.5C9.41421 4.5 9.75 4.16421 9.75 3.75C9.75 3.33579 9.41421 3 9 3C8.58579 3 8.25 3.33579 8.25 3.75C8.25 4.16421 8.58579 4.5 9 4.5Z"
-                          stroke="black"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M9 15C9.41421 15 9.75 14.6642 9.75 14.25C9.75 13.8358 9.41421 13.5 9 13.5C8.58579 13.5 8.25 13.8358 8.25 14.25C8.25 14.6642 8.58579 15 9 15Z"
-                          stroke="black"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody>{renderedRows()}</tbody>
             </table>
           </div>
         </div>
       </div>
 
       <nav aria-label="">
-        <ul className="flex justify-end mr-[22px] mt-[16px] -space-x-px">
+        <ul className="flex justify-end mr-[22px] mt-[16px] gap-[8px] items-center">
           <li>
-            <a
-              href="#"
-              className="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700  "
+            <button
+              onClick={() => {
+                if (page === 1) return;
+                setPage(page - 1);
+              }}
+              type="button"
+              className="py-2 px-3 ml-0 leading-tight text-black bg-white rounded-md font-bold"
             >
-              Previous
-            </a>
+              {'<'}
+            </button>
           </li>
+
           <li>
-            <a
-              href="#"
-              className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700  "
+            <button
+              type="button"
+              className="py-2 px-3 leading-tight  bg-black text-white rounded-md"
             >
-              1
-            </a>
+              {page}
+            </button>
           </li>
-          <li>
-            <a
-              href="#"
-              className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700  "
-            >
-              2
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              aria-current="page"
-              className="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 "
-            >
-              3
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700  "
-            >
-              4
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700  "
-            >
-              5
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700  "
-            >
-              Next
-            </a>
-          </li>
+          <span className="text-black">{`of ${totalPages}`}</span>
+          {totalPages && page !== totalPages ? (
+            <li>
+              <button
+                onClick={() => setPage(page + 1)}
+                type="button"
+                className="py-2 px-3 leading-tight text-black bg-white rounded-md font-bold"
+              >
+                {'>'}
+              </button>
+            </li>
+          ) : null}
         </ul>
       </nav>
     </>
   );
 }
 
-export default Billing;
+export default Auctions;
