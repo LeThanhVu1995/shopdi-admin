@@ -19,7 +19,7 @@ export default function ({ opened, setOpened, user, onEditUser }) {
       },
       {
         name: ['gender'],
-        value: '0',
+        value: user.gender.toString(),
       },
       {
         name: ['phone'],
