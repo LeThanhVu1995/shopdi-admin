@@ -366,7 +366,7 @@ export default function ({
                 <Col span={6}>
                   <Form.Item
                     name="discountPercent"
-                    label="% Thuế xu (mặc định 20%)"
+                    label="% Giảm (mặc định 20%)"
                   >
                     <InputNumber
                       formatter={(value) => {
