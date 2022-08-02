@@ -7,6 +7,7 @@ export default function ({ opened, setOpened, user, onEditUser }) {
   if (!opened) return null;
 
   const fieldsUser = useMemo(() => {
+    console.log(user);
     return [
       {
         name: ['name'],
@@ -14,7 +15,7 @@ export default function ({ opened, setOpened, user, onEditUser }) {
       },
       {
         name: ['birthday'],
-        value: moment('2022-05-12 14:00', 'YYYY-MM-DD HH:mm'),
+        value: user.birthDay ? moment(user.birthDay, 'DD/MM/YYYY') : '',
       },
       {
         name: ['gender'],
