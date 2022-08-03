@@ -273,6 +273,8 @@ function Home() {
       if (status) {
         message.success('Bạn đã nạp xu thành công');
         setDepositeModal(false);
+        const { data: users } = await userService.actGetUsers();
+        setUsers(mappingUsersTable(users) || []);
       } else {
         message.error(mess);
       }
