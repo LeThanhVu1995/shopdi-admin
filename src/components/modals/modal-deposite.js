@@ -56,6 +56,7 @@ export default function ({ opened, setOpened, onActDeposite }) {
               onFinish={(values) => {
                 onDeposite(values);
               }}
+              initialValues={{ coin: '100' }}
               layout="vertical"
             >
               <Form.Item
