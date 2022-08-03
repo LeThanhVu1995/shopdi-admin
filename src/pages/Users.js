@@ -157,6 +157,18 @@ function Home() {
     }
   };
 
+  const getSex = (gender) => {
+    if (gender === 2) {
+      return 'Nữ';
+    }
+
+    if (gender === 1) {
+      return 'Nam';
+    }
+
+    return 'Khác';
+  };
+
   const renderRows = () => {
     if (emptyArray(usersPage)) return null;
 
@@ -201,7 +213,7 @@ function Home() {
           <td className="px-6 py-2">{email}</td>
           <td className="px-6 py-2">{phone}</td>
           <td className="px-6 py-2">{point}</td>
-          <td className="px-6 py-2">{gender === 0 ? 'Nam' : 'Nữ'}</td>
+          <td className="px-6 py-2">{getSex(gender)}</td>
           <td className="px-6 py-2">{birthDay}</td>
           <td className="px-6 py-2">{walletCode}</td>
           <td className="px-6 py-2">{userId}</td>

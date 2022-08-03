@@ -94,9 +94,9 @@ export default function ({ opened, setOpened, user, onEditUser }) {
               </Form.Item>
               <Form.Item name="gender" label="Giới Tính">
                 <Radio.Group>
-                  <Radio value="0"> Nam </Radio>
-                  <Radio value="1"> Nữ </Radio>
-                  <Radio value="2"> Khác </Radio>
+                  <Radio value="1"> Nam </Radio>
+                  <Radio value="2"> Nữ </Radio>
+                  <Radio value="0"> Khác </Radio>
                 </Radio.Group>
               </Form.Item>
               <Form.Item name="phone" label="Số Điện Thoại">
