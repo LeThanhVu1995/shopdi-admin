@@ -294,7 +294,7 @@ function Home() {
         email: values.email,
         id: userId,
         gender: values.gender,
-        birthDay: values.birthday.format('DD/MM/YYYY'),
+        birthDay: values.birthday ? values.birthday.format('DD/MM/YYYY') : '',
       });
 
       if (status) {
