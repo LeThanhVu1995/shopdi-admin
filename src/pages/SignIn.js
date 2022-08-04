@@ -21,8 +21,12 @@ export default function SignIn() {
     try {
       if (!username || !password) return;
       setLoading(true);
-      await signin(username, password);
-      message.success('Đăng nhập thành công');
+      const { status, message: mes } = await signin(username, password);
+      if (status) {
+        message.success('Đăng nhập thành công');
+      } else {
+        message.error(mes);
+      }
     } catch (err) {
       message.error('Đăng nhập thất bại.');
     } finally {

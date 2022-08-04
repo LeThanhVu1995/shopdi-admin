@@ -20,19 +20,20 @@ function AuthProvider({ children }) {
     setIsLogged(token);
   }, []);
 
-  const signin = useCallback((username, password) => {
-    return (async () => {
-      const user = { username, password };
-      const { status, data } = await authService.actSignin(user);
-      if (status) {
-        const { token, userInfo } = data;
-        localStorage.setItem(ACCESS_TOKEN_KEY, token);
-        localStorage.setItem('USER_INFO', JSON.stringify(userInfo));
-        setUser(userInfo);
-        setIsLoggedState();
-      }
-    })();
-  }, []);
+  const signin = async (username, password) => {
+    const user = { username, password };
+    const res = await authService.actSignin(user);
+    const { status, data } = res;
+    if (status) {
+      const { token, userInfo } = data;
+      localStorage.setItem(ACCESS_TOKEN_KEY, token);
+      localStorage.setItem('USER_INFO', JSON.stringify(userInfo));
+      setUser(userInfo);
+      setIsLoggedState();
+    }
+
+    return res;
+  };
 
   const signout = useCallback(() => {
     return (async () => {
