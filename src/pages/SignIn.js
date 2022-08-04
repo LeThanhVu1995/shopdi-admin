@@ -25,7 +25,9 @@ export default function SignIn() {
       if (status) {
         message.success('Đăng nhập thành công');
       } else {
-        message.error(mes);
+        message.error(
+          mes === 'Password incorrect' ? 'Mật khẩu không đúng' : mes
+        );
       }
     } catch (err) {
       message.error('Đăng nhập thất bại.');
