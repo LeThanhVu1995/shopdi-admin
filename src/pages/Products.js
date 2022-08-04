@@ -59,15 +59,18 @@ function Products() {
       fromDate = fromDate.format('HH:mm DD/MM/YYYY');
       toDate = toDate.format('HH:mm DD/MM/YYYY');
 
-      const { status } = await hiddenPriceService.actPostHiddenPriceSetting({
-        ...values,
-        sku,
-        fromDate,
-        toDate,
-      });
+      const { status, message: mess } =
+        await hiddenPriceService.actPostHiddenPriceSetting({
+          ...values,
+          sku,
+          fromDate,
+          toDate,
+        });
 
       if (status) {
         message.success('Bạn đã tạo phiên đấu giá thành công');
+      } else {
+        message.warning(mess);
       }
     } catch (err) {
       console.error(err);
