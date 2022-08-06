@@ -298,6 +298,11 @@ function Products() {
                   />
                 </svg>
                 <input
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      onSearch();
+                    }
+                  }}
                   value={search}
                   onChange={(e) => setSearch(e.target.value || '')}
                   placeholder="Tìm Kiếm"
