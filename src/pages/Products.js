@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import { useUI } from '../hook/useUI';
 import { useAuth } from '../hook/useAuth';
-import profilavatar from '../assets/images/face-1.jpg';
 import { ProductService, HiddenPriceService } from '../api';
 import { emptyArray } from '../core/utils';
 import ModalItemUser from '../components/modals/modal-item-user';
@@ -21,6 +20,7 @@ const columns = [
   { name: 'Giá Bán' },
   { name: 'Tồn Kho' },
   { name: 'Mở phiên mở giá' },
+  { name: 'Loại đấu giá' },
   { name: 'Hành Động', class: 'text-right' },
 ];
 
@@ -187,6 +187,11 @@ function Products() {
           <td className="px-2 py-2">{listPrice}</td>
           <td className="px-2 py-2">{wishlistCount}</td>
           <td className="px-2 py-2">{isInBidding ? 'Có' : 'Không'}</td>
+          <td className="px-2 py-2">
+            {salesType === 1 ? 'Xem Giá Liên Tục' : ''}
+            {salesType === 2 ? 'Giữ 25s' : ''}
+            {salesType === 0 ? 'Chưa đấu giá' : ''}
+          </td>
           <td className="px-2 py-2 text-right">
             <button
               type="button"
