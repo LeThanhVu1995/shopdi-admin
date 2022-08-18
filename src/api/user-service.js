@@ -20,6 +20,10 @@ class UserService extends BaseService {
   actPostUserProfile = ({ name, birthDay, gender, email, id }) => {
     return this.post('/users/profile', { name, birthDay, gender, email, id });
   };
+
+  actPostUserAdmin = (params) => {
+    return this.post('/users/admin', params);
+  };
 }
 
 export default UserService;

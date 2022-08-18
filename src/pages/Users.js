@@ -10,6 +10,7 @@ import { emptyArray } from '../core/utils';
 
 import profilavatar from '../assets/images/male.jpg';
 import { useUI } from '../hook/useUI';
+import ModalAddUser from '../components/modals/modal-add-user';
 
 const userService = new UserService();
 const notificationService = new NotificationService();
@@ -26,6 +27,7 @@ function Home() {
   const [userModal, setUserModal] = useState(false);
   const [depositeModal, setDepositeModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
+  const [userAddModal, setUserAddModal] = useState(false);
 
   const totalPages = useMemo(() => {
     if (emptyArray(users)) return 0;
@@ -297,6 +299,33 @@ function Home() {
     }
   };
 
+  const onActCreateUser = async (values) => {
+    try {
+      setLoading(true);
+      const params = {
+        ...values,
+        birthDay: values.birthday ? values.birthday.format('DD/MM/YYYY') : '',
+      };
+
+      const { status, message: mess } = await userService.actPostUserAdmin(
+        params
+      );
+
+      if (status) {
+        message.success('Bạn đã tạo thành công người đùng admin');
+        setUserModal(false);
+        const { data: users } = await userService.actGetUsers();
+        setUsers(mappingUsersTable(users) || []);
+      } else {
+        message.error(mess);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onActEditUser = async (values) => {
     try {
       setLoading(true);
@@ -349,6 +378,11 @@ function Home() {
   }, []);
   return (
     <>
+      <ModalAddUser
+        opened={userAddModal}
+        setOpened={setUserAddModal}
+        onCreateUser={onActCreateUser}
+      />
       <ModalHistory opened={historyModal} setOpened={setHistoryModal} />
       <ModalDeposite
         opened={depositeModal}
@@ -433,36 +467,22 @@ function Home() {
               </select>
             </div>
             <div className="flex flex-row gap-[8px]">
-              <button type="button" className="group rotate-90">
+              <button
+                onClick={() => setUserAddModal(true)}
+                type="button"
+                className="group rotate-90"
+              >
                 <svg
-                  className="fill-gray-400"
-                  style={{ display: 'initial' }}
                   xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="gray"
+                  width="40"
+                  height="40"
+                  fill="currentColor"
+                  className="bi bi-plus"
+                  viewBox="0 0 16 16"
                 >
                   <path
-                    d="M9 9.75C9.41421 9.75 9.75 9.41421 9.75 9C9.75 8.58579 9.41421 8.25 9 8.25C8.58579 8.25 8.25 8.58579 8.25 9C8.25 9.41421 8.58579 9.75 9 9.75Z"
-                    stroke="black"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M9 4.5C9.41421 4.5 9.75 4.16421 9.75 3.75C9.75 3.33579 9.41421 3 9 3C8.58579 3 8.25 3.33579 8.25 3.75C8.25 4.16421 8.58579 4.5 9 4.5Z"
-                    stroke="black"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M9 15C9.41421 15 9.75 14.6642 9.75 14.25C9.75 13.8358 9.41421 13.5 9 13.5C8.58579 13.5 8.25 13.8358 8.25 14.25C8.25 14.6642 8.58579 15 9 15Z"
-                    stroke="black"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                    fill="#FDD116"
                   />
                 </svg>
               </button>
