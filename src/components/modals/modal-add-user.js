@@ -48,7 +48,7 @@ export default function ({ opened, setOpened, onCreateUser }) {
           </button>
           <div className="flex flex-col gap-[16px] px-6 py-6 lg:px-8">
             <h3 className="text-[#1B1D21] text-[18px] font-medium mb-[18px]">
-              Thông tin người dùng
+              Tạo Ngưởi Dùng
             </h3>
             <Form
               wrapperCol={{ span: 24 }}
@@ -143,7 +143,7 @@ export default function ({ opened, setOpened, onCreateUser }) {
                     htmlType="submit"
                     className="bg-black hover:bg-black hover:text-white hover:border-black text-white text-[14px] font-medium rounded-md w-[120px] h-[40px]"
                   >
-                    Thêm User
+                    Thêm
                   </Button>
                 </Col>
               </Row>
