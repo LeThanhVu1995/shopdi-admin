@@ -86,6 +86,21 @@ export default function ({ opened, setOpened, onCreateUser }) {
                 name="password"
                 rules={[
                   { required: true, message: 'Xin vui lòng nhập mật khẩu' },
+                  () => ({
+                    validator(_, value) {
+                      const regexPwd =
+                        // eslint-disable-next-line no-useless-escape
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+                      if (regexPwd.test(value)) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          'Password phải bao gồm 1 viết hoa 1 kí tự đặc biệt, 1 số nha dài 8 ký tự'
+                        )
+                      );
+                    },
+                  }),
                 ]}
               >
                 <Input.Password className="rounded-md w-full p-2.5 border border-[#4D4D4D] bg-white" />

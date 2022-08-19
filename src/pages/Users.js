@@ -307,13 +307,15 @@ function Home() {
         birthDay: values.birthday ? values.birthday.format('DD/MM/YYYY') : '',
       };
 
+      delete params.birthday;
+
       const { status, message: mess } = await userService.actPostUserAdmin(
         params
       );
 
       if (status) {
         message.success('Bạn đã tạo thành công người đùng admin');
-        setUserModal(false);
+        setUserAddModal(false);
         const { data: users } = await userService.actGetUsers();
         setUsers(mappingUsersTable(users) || []);
       } else {
