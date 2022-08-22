@@ -105,7 +105,16 @@ export default function ({ opened, setOpened, onCreateUser }) {
               >
                 <Input.Password className="rounded-md w-full p-2.5 border border-[#4D4D4D] bg-white" />
               </Form.Item>
-              <Form.Item name="birthday" label="Ngày Sinh">
+              <Form.Item
+                name="birthday"
+                label="Ngày Sinh"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Xin vui lòng nhập ngày sinh',
+                  },
+                ]}
+              >
                 <DatePicker
                   format="YYYY-MM-DD"
                   className="rounded-md w-full p-2.5 border border-[#4D4D4D] bg-white"
@@ -118,13 +127,25 @@ export default function ({ opened, setOpened, onCreateUser }) {
                   <Radio value="0"> Khác </Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item name="phone" label="Số Điện Thoại">
+              <Form.Item
+                name="phone"
+                label="Số Điện Thoại"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Xin vui lòng nhập số điện thoại',
+                  },
+                ]}
+              >
                 <Input className="rounded-md w-full bg-white border-[#4D4D4D]" />
               </Form.Item>
               <Form.Item
                 name="email"
                 label="Email"
-                rules={[{ type: 'email', message: 'Email ko đúng.' }]}
+                rules={[
+                  { required: true, message: 'Xin vui lòng nhập email' },
+                  { type: 'email', message: 'Email ko đúng.' },
+                ]}
               >
                 <Input className="rounded-md w-full bg-white border-[#4D4D4D]" />
               </Form.Item>

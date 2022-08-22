@@ -470,23 +470,26 @@ function Home() {
             </div>
             <div className="flex flex-row gap-[8px]">
               <button
-                onClick={() => setUserAddModal(true)}
                 type="button"
-                className="group rotate-90"
+                onClick={() => {
+                  setUserAddModal(true);
+                }}
+                className="flex rounded-[12px] bg-black py-[12px] px-[24px] items-center justify-center gap-[8px] text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
+                  width="20"
+                  height="20"
                   fill="currentColor"
                   className="bi bi-plus"
                   viewBox="0 0 16 16"
                 >
                   <path
                     d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-                    fill="#FDD116"
+                    fill="white"
                   />
                 </svg>
+                <span>Thêm Admin</span>
               </button>
               <button
                 type="button"
